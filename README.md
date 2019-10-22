@@ -1,3 +1,16 @@
+# How-to
+```
+cd user-portal
+mvn clean package
+java -jar target/user-portal-0.0.1-SNAPSHOT.jar
+```
+
+```
+cd portal-app
+npm i
+npm start
+```
+
 # spring-boot-angular5
 This is a sample project using Angular 5 and spring Boot.Spring boot has been used to expose REST Endpoints and the client is written in angular. 
 This is a complete web application with a connectivity to mysql database. We have used spring data to connect to the database and perform CRUD
