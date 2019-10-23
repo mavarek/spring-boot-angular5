@@ -1,0 +1,31 @@
+version: 2
+jobs:
+  user-portal:
+    docker:
+      - image: circleci/openjdk:8-jdk-stretch
+    steps:
+      - checkout
+      - restore_cache:
+        key: user-portal-{{ checksum "pom.xml" }}
+      - run: cd user-portal
+      - run: mvn package
+      - save_cache:
+        key: user-portal-{{ checksum "pom.xml" }}
+  portal-app:
+    docker:
+      - image: circleci/node:dubnium
+    steps:
+      - checkout
+      - run: 'sudo npm install -g npm@latest'
+      - restore_cache:
+        key: portal-app-{{ checksum "package-lock.json" }}
+      - run: 'cd portal-app'
+      - run: 'npm install'
+      - save_cache:
+        key: portal-app-{{ checksum "package-lock.json" }}
+workflows:
+  version: 2
+  all:
+    jobs:
+      - build
+      - portal-app
