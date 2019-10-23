@@ -5,9 +5,9 @@ jobs:
       - image: circleci/openjdk:8-jdk-stretch
     steps:
       - checkout
+      - run: cd user-portal
       - restore_cache:
           key: user-portal-{{ checksum "pom.xml" }}
-      - run: cd user-portal
       - run: mvn package
       - save_cache:
           paths: ~/.m2
@@ -18,9 +18,9 @@ jobs:
     steps:
       - checkout
       - run: 'sudo npm install -g npm@latest'
+      - run: 'cd portal-app'
       - restore_cache:
           key: portal-app-{{ checksum "package-lock.json" }}
-      - run: 'cd portal-app'
       - run: 'npm install'
       - save_cache:
           paths:
