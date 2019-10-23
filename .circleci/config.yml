@@ -6,11 +6,12 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-        key: user-portal-{{ checksum "pom.xml" }}
+          key: user-portal-{{ checksum "pom.xml" }}
       - run: cd user-portal
       - run: mvn package
       - save_cache:
-        key: user-portal-{{ checksum "pom.xml" }}
+          paths: ~/.m2
+          key: user-portal-{{ checksum "pom.xml" }}
   portal-app:
     docker:
       - image: circleci/node:dubnium
@@ -18,14 +19,16 @@ jobs:
       - checkout
       - run: 'sudo npm install -g npm@latest'
       - restore_cache:
-        key: portal-app-{{ checksum "package-lock.json" }}
+          key: portal-app-{{ checksum "package-lock.json" }}
       - run: 'cd portal-app'
       - run: 'npm install'
       - save_cache:
-        key: portal-app-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+          key: portal-app-{{ checksum "package-lock.json" }}
 workflows:
   version: 2
   all:
     jobs:
-      - build
+      - user-portal
       - portal-app
